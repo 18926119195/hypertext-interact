@@ -16,6 +16,7 @@ import { yawPitchToRadial, radialToYawPitch } from '../cvs/geometry'
 import { emphasisStrokeColor } from '../cvs/emphasisStroke'
 import { renderEmphasisTile } from '../data/emphasisCatalog'
 import type { EmphasisEdge } from '../data/emphasis'
+import { isTextEditingTarget } from './textEditing'
 
 const MAP_R = 1
 const CAM_DIST = 3.15
@@ -394,6 +395,7 @@ function StarMapScene({
 }
 
 export function EmphasisStarMap() {
+  const workspaceMode = useDocuverse((s) => s.workspaceMode)
   const edges = useDocuverse((s) => s.emphasisEdges)
   const pages = useDocuverse((s) => s.pages)
   const fromId = useDocuverse((s) => s.emphasisLinkFromId)
@@ -412,6 +414,36 @@ export function EmphasisStarMap() {
     lastY: number
   } | null>(null)
   const cache = useRef(new Map<string, string>())
+
+  const readMainOrbit = useCallback((): { yaw: number; pitch: number } => {
+    const s = useDocuverse.getState()
+    if (s.cameraEye) {
+      return radialToYawPitch(
+        new THREE.Vector3(s.cameraEye[0], s.cameraEye[1], s.cameraEye[2]),
+      )
+    }
+    return { yaw: s.viewYaw, pitch: s.viewPitch }
+  }, [])
+
+  /** 正位：微缩球视角回到「你在此」，并恢复跟随 */
+  const snapToYou = useCallback(() => {
+    const { yaw, pitch } = readMainOrbit()
+    setMapYaw(yaw)
+    setMapPitch(pitch)
+    setFollowMain(true)
+  }, [readMainOrbit])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (isTextEditingTarget(e.target)) return
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      if (e.key.toLowerCase() !== 'm') return
+      e.preventDefault()
+      snapToYou()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [snapToYou])
 
   useEffect(() => {
     if (!hoverId) {
@@ -455,6 +487,12 @@ export function EmphasisStarMap() {
     if (e.button !== 2) return
     e.preventDefault()
     e.currentTarget.setPointerCapture(e.pointerId)
+    // 离开跟随时，先写入当前主视角，避免跳变；松开后保持自由视角以便对比
+    if (followMain) {
+      const { yaw, pitch } = readMainOrbit()
+      setMapYaw(yaw)
+      setMapPitch(pitch)
+    }
     setFollowMain(false)
     drag.current = {
       pointerId: e.pointerId,
@@ -476,7 +514,7 @@ export function EmphasisStarMap() {
   const onPointerUp = (e: ReactPointerEvent) => {
     if (!drag.current || drag.current.pointerId !== e.pointerId) return
     drag.current = null
-    setFollowMain(true)
+    // 不再自动 followMain — 用「正位 / M」才回到你在此
     try {
       e.currentTarget.releasePointerCapture(e.pointerId)
     } catch {
@@ -486,9 +524,14 @@ export function EmphasisStarMap() {
 
   if (edges.length === 0) {
     return (
-      <aside className="star-map-root" aria-label="强调星图">
+      <aside
+        className={`star-map-root${workspaceMode === 'flat' ? ' star-map-flat' : ''}`}
+        aria-label="微缩球"
+      >
         <header className="star-map-head">
-          <span className="star-map-title">星图 · 建联</span>
+          <span className="star-map-title">
+            {workspaceMode === 'flat' ? '微缩球 · 建联' : '星图 · 建联'}
+          </span>
           <span className="star-map-meta">0 线圈</span>
         </header>
         <p className="star-map-status">尚无强调 · H 开笔在页上圈注后出现于此</p>
@@ -497,18 +540,28 @@ export function EmphasisStarMap() {
     )
   }
 
-  // 始终常驻（漫游 / 建联 / 回顾 / 四面体）
+  // 始终常驻（漫游 / 建联 / 回顾 / 四面体 / 轻量原页）
   const fromEdge = edges.find((e) => e.id === fromId)
   const hoverEdge = edges.find((e) => e.id === hoverId)
 
   return (
     <aside
-      className={`star-map-root${fromId ? ' linking' : ''}`}
-      aria-label="强调星图 · 建联"
+      className={`star-map-root${fromId ? ' linking' : ''}${workspaceMode === 'flat' ? ' star-map-flat' : ''}${followMain ? '' : ' free-orbit'}`}
+      aria-label="微缩球 · 建联"
     >
       <header className="star-map-head">
-        <span className="star-map-title">星图 · 建联</span>
+        <span className="star-map-title">
+          {workspaceMode === 'flat' ? '微缩球 · 建联' : '星图 · 建联'}
+        </span>
         <span className="star-map-meta">{edges.length} 线圈</span>
+        <button
+          type="button"
+          className={`star-map-home${followMain ? ' is-home' : ''}`}
+          onClick={snapToYou}
+          title="正位：回到「你在此」并恢复跟随（快捷键 M）"
+        >
+          正位 M
+        </button>
       </header>
 
       {fromId ? (
@@ -524,9 +577,11 @@ export function EmphasisStarMap() {
         </p>
       ) : (
         <p className="star-map-status">
-          {selectedId
-            ? 'Enter 锁定当前强调为 A，再点星图上的线圈 B'
-            : '选中强调后按 Enter，或直接点线圈导航'}
+          {followMain
+            ? selectedId
+              ? 'Enter 锁 A · 右键拖可自由环视（松开保持）'
+              : '右键拖环视对比 · M / 正位 回到你在此'
+            : '自由环视中 · 按 M 或点「正位」回到你在此'}
         </p>
       )}
 
@@ -554,7 +609,7 @@ export function EmphasisStarMap() {
           <StarMapScene setHoverId={setHoverId} />
         </Canvas>
         <div className="star-map-you-badge" aria-hidden>
-          你在此
+          {followMain ? '你在此 · 跟随' : '自由环视'}
         </div>
       </div>
 

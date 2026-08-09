@@ -37,6 +37,17 @@ export function HUD() {
       <header className="hud-brand">
         <div className="brand-mark">DOCUMVERSE</div>
         <div className="brand-sub">Ted Nelson · CVS 连接宇宙</div>
+        <div className="mode-toggle workspace">
+          <button
+            type="button"
+            onClick={() => useDocuverse.getState().setWorkspaceMode('flat')}
+          >
+            原页标注
+          </button>
+          <button type="button" className="active">
+            球面探索
+          </button>
+        </div>
         <button
           type="button"
           className="upload-btn hud-workbench-launch"

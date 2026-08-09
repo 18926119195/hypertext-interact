@@ -76,6 +76,9 @@ import type { FlinkType } from '../zigzag/types'
 
 export type CorpusId = 'pdf' | 'origins' | 'upload'
 
+/** flat = 原页轻量标注主路径；sphere = 球面探索 / 专利式构建 */
+export type WorkspaceMode = 'flat' | 'sphere'
+
 const originsBuilt = {
   pages: buildConnections(PERMASCROLL, DEMO_EDL).pages,
   connections: [] as ResolvedConnection[],
@@ -299,6 +302,8 @@ interface DocuverseState {
   corpus: CorpusId
   uploadLabel: string | null
   uploadProgress: { current: number; total: number; message: string } | null
+  /** 轻量原页标注 vs 球面宇宙 */
+  workspaceMode: WorkspaceMode
   pages: PageDocument[]
   connections: ResolvedConnection[]
   currentStrand: number
@@ -468,6 +473,7 @@ interface DocuverseState {
   closeLinkFocus: () => void
   swapLinkFocus: () => void
   setCorpus: (c: CorpusId) => void
+  setWorkspaceMode: (mode: WorkspaceMode) => void
   applyUploadedUniverse: (data: {
     pages: PageDocument[]
     connections: ResolvedConnection[]
@@ -614,6 +620,7 @@ export const useDocuverse = create<DocuverseState>((set, get) => ({
   ocrHoverBlock: null,
   ocrEditingBlockId: null,
   ocrInlineEdit: false,
+  workspaceMode: 'flat',
   permanentBonds: initialBonds.bonds,
   userBeams: initialBonds.beams,
   bondLinkFromId: null,
@@ -1408,6 +1415,32 @@ export const useDocuverse = create<DocuverseState>((set, get) => ({
     setTimeout(() => set({ swooping: false }), 900)
   },
 
+  setWorkspaceMode: (mode) => {
+    const prev = get().workspaceMode
+    if (prev === mode) return
+    set({
+      workspaceMode: mode,
+      // Leaving sphere: drop transient 3D lens so flat stays calm
+      ...(mode === 'flat'
+        ? {
+            cameraLens: 'roaming' as const,
+            constructionLinkId: null,
+            retrospectiveLinkId: null,
+            tetrahedronCorner: null,
+            suppressCameraOrbit: false,
+          }
+        : {}),
+    })
+    pushPipeline(get, set, {
+      kind: 'note',
+      actor: 'user',
+      summary:
+        mode === 'flat'
+          ? '进入轻量原页标注（主路径）'
+          : '进入球面探索（演示 / 专利式构建）',
+    })
+  },
+
   setCorpus: (c) => {
     if (c === 'upload' && !uploadedBuilt) return
     const data = pack(c)
@@ -1830,7 +1863,10 @@ export const useDocuverse = create<DocuverseState>((set, get) => ({
       emphasisLinkFromId: null,
       selectedEmphasisId: toEmphasisId,
     })
-    get().enterConstructionLens(link.id)
+    // 球面模式才自动进构建镜头；轻量主路径只完成语义建联
+    if (get().workspaceMode === 'sphere') {
+      get().enterConstructionLens(link.id)
+    }
     pushPipeline(get, set, {
       kind: 'link',
       actor: 'user',
