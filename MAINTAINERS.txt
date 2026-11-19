@@ -1,8 +1,8 @@
 hypertext-interact｜A1 证据约束的交互原型
 开发时间线（原话、实现提交、源码行号和验证）见同目录 DEVELOPMENT_HISTORY.txt。
-https://github.com/18926119195/hypertext-interact/blob/codex/repository-cleanup/DEVELOPMENT_HISTORY.txt
+https://github.com/18926119195/hypertext-interact/blob/main/DEVELOPMENT_HISTORY.txt
 核验 Git 提交 d4c188a541c758c4ba691ae7088dc82b87f56269
-协作总导航 https://github.com/18926119195/docuverse/blob/codex/repository-cleanup/MAINTAINERS.txt
+协作总导航 https://github.com/18926119195/docuverse/blob/main/MAINTAINERS.txt
 
 这个库在开发什么
 应用在 docuverse/。开发主线是 PDF/OCR 槽、V_q 召回、锁定证据、闭包匹配和推理结果复用。可以从 UI 沿调用追到发送给模型的正文；外部模型内部如何分配注意力没有实现证据。
