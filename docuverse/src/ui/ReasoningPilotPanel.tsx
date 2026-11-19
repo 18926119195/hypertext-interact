@@ -54,7 +54,6 @@ export function ReasoningPilotPanel() {
   const setCorpus = useReasoning((s) => s.setCorpus)
   const activateResolved = useReasoning((s) => s.activateResolved)
   const setLockFailure = useReasoning((s) => s.setLockFailure)
-  const pickCandidate = useReasoning((s) => s.pickCandidate)
   const clearActive = useReasoning((s) => s.clearActive)
   const activeR = useReasoning((s) => s.activeR)
   const activeKey = useReasoning((s) => s.activeKey)

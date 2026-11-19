@@ -1,0 +1,110 @@
+hypertext-interact / DEVELOPMENT_HISTORY.txt
+
+仓库 https://github.com/18926119195/hypertext-interact
+核对日 2026-11-19（UTC+08:00）。下文时间取 Git 作者时间，精确到秒。
+历史基线 main d4c188a541c758c4ba691ae7088dc82b87f56269
+当前协作分支 codex/repository-cleanup 22b03d436c51838c5a29a075abb43a1fdb407b0f
+
+菜单
+  HYP-01  球面文档工作区
+  HYP-02  平面原页标注与微缩球
+  HYP-03  从圈选到 A1 证据和模型调用
+  HYP-04  切割式 OCR、A1 槽与几何回溯
+  HYP-05  V_q 混合召回、查询扩写与对象锚定
+  HYP-06  房内方向复用、排除和推理回写
+  HYP-07  main 的后续提交与历史分支
+  HYP-08  构建修复、协作入口与文件归档
+  HYP-09  当前运行、核对和研究接续
+  HYP-10  transcript 缺口与跨库后续证据
+
+[HYP-01] 2026-08-09 09:04:29 +08:00  球面文档工作区
+Git 原文：Initial commit: Ted Nelson docuverse workspace.
+应用根视图挂载 CvsScene、键盘导航、强调星图、链接控制、构建镜头和视路时间轴。它提供文档浏览与标注交互的源代码基线。本轮将该阶段记为源码可追溯，运行检查覆盖后续协作分支。
+https://github.com/18926119195/hypertext-interact/commit/034ebe5fbbec5b4a17092f57aae2012561a9530e
+https://github.com/18926119195/hypertext-interact/blob/034ebe5fbbec5b4a17092f57aae2012561a9530e/docuverse/src/App.tsx#L12-L29
+
+[HYP-02] 2026-08-09 11:05:39 +08:00  平面原页标注与微缩球
+Git 原文：Add v2 light main path: flat page annotation with mini-sphere.
+App 按 `workspaceMode` 切换入口。平面分支挂载 `FlatPageWorkbench` 与 `EmphasisStarMap`，其中标注笔产生手势输入、可把当前标注设为联结起点，也可切回球面打开已存在的联结。进入后续推理试点 0afde819 时，入口重新采用球面 `CvsScene`，并挂载推理面板。当前远端 `v2-flat-minisphere` 仍指向本阶段提交。复查平面功能时应切换到该提交。
+https://github.com/18926119195/hypertext-interact/commit/36f3fee15691046c095da08f4358fcd8ef4f7516
+https://github.com/18926119195/hypertext-interact/blob/36f3fee15691046c095da08f4358fcd8ef4f7516/docuverse/src/App.tsx#L14-L50
+https://github.com/18926119195/hypertext-interact/blob/36f3fee15691046c095da08f4358fcd8ef4f7516/docuverse/src/ui/FlatPageWorkbench.tsx#L150-L196
+
+[HYP-03] 2026-08-16 13:51:09 +08:00  从圈选到 A1 证据和模型调用
+Git 原文：Add reasoning pilot that locks model context to circled A1 text slices.
+App 接入 ReasoningPilotPanel。A1 在用户圈选前登记文本或图像对象。圈选从当前页已登记的原子筛出候选，模型调用接收从对象生成的 Bundle。配置有效时向兼容 `/chat/completions` 请求，未配置时返回内置 Mock。证据约束在应用输入及提示词层生效，载荷为文本消息。
+https://github.com/18926119195/hypertext-interact/commit/0afde81901228443c804bf8503c6fdac41f1632e
+https://github.com/18926119195/hypertext-interact/blob/0afde81901228443c804bf8503c6fdac41f1632e/docuverse/src/App.tsx#L13-L27
+https://github.com/18926119195/hypertext-interact/blob/0afde81901228443c804bf8503c6fdac41f1632e/docuverse/src/reasoning/pipelineA.ts#L569-L615
+https://github.com/18926119195/hypertext-interact/blob/0afde81901228443c804bf8503c6fdac41f1632e/docuverse/src/reasoning/llmClient.ts#L55-L85
+
+[HYP-04] 2026-08-17 19:45:58 +08:00  切割式 OCR、A1 槽与几何回溯
+Git 原文：Sync reasoning pilot slot pipeline and vendor specs for private backup.
+上传 PDF → 按配置对无文字页 OCR → 建 A1 和索引。整页布局提案先给区域和文本，只有该提案文字为空时裁剪重跑识别。A1 优先 OCR、其次 PDF 文本，缺字有图时存为全页图对象。圈选或 V_q 候选保存已登记的框，高亮沿这些框回溯。当前分支的模块检查验证已知尺寸的像素框转换、PDF 文字回退、全页图槽和圈选命中原框。
+https://github.com/18926119195/hypertext-interact/commit/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a
+https://github.com/18926119195/hypertext-interact/blob/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a/docuverse/src/ui/PdfUploadPanel.tsx#L48-L99
+https://github.com/18926119195/hypertext-interact/blob/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a/docuverse/src/data/ocrService.ts#L589-L647
+https://github.com/18926119195/hypertext-interact/blob/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a/docuverse/src/reasoning/pipelineA.ts#L185-L244
+https://github.com/18926119195/hypertext-interact/blob/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a/docuverse/src/reasoning/inkHighlight.ts#L153-L177
+
+[HYP-05] 2026-08-17 19:45:58 +08:00  V_q 混合召回、查询扩写与对象锚定
+同一 Git 提交将 BM25 与向量余弦融合，默认稀疏 0.45、向量 0.55。未配 Embedding 时使用本地词法探针。中文或较少拉丁词的问题可调用同一兼容 Chat 端点扩写，然后召回已有槽；主推理另发请求。候选包含门牌、文本、框和分数。达到分差阈值时 UI 自动选中并激活，否则需要点候选确认。固定合成样例复跑证实本地检索命中与模拟扩写的调用顺序；真实语料的召回率和阈值可靠性没有运行结论。
+https://github.com/18926119195/hypertext-interact/blob/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a/docuverse/src/reasoning/pipelineA.ts#L712-L801
+https://github.com/18926119195/hypertext-interact/blob/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a/docuverse/src/reasoning/queryExpand.ts#L92-L130
+https://github.com/18926119195/hypertext-interact/blob/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a/docuverse/src/ui/ReasoningPilotPanel.tsx#L457-L478
+
+[HYP-06] 2026-08-17 19:45:58 +08:00  房内方向复用、排除和推理回写
+同一 Git 提交挂载 ReasoningFloorDock。Zustand 闭包状态按当前 `R.key` 找旧方向，复用取原结论；加入排除时设置待推理标志，面板把旧方向转为 Bundle 清单，随后回写新结论。当前分支的模块检查证实复用零 fetch，验证排除标志只消费一次及负面清单实际进入 prompt。浏览器 effect 的完整点击时序待实测。
+https://github.com/18926119195/hypertext-interact/blob/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a/docuverse/src/App.tsx#L14-L25
+https://github.com/18926119195/hypertext-interact/blob/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a/docuverse/src/reasoning/closureStore.ts#L393-L469
+https://github.com/18926119195/hypertext-interact/blob/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a/docuverse/src/ui/ReasoningPilotPanel.tsx#L488-L551
+https://github.com/18926119195/hypertext-interact/blob/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a/docuverse/src/reasoning/closureStore.ts#L547-L578
+
+[HYP-07] 2026-08-17 19:51:45 +08:00  main 的后续提交与历史分支
+提交 d4c188a541c758c4ba691ae7088dc82b87f56269 只新增材料说明文件，无应用源码差异。核验时 main 和 cursor/reasoning-pilot-a1-lock 同指该提交，v2-flat-minisphere 指向 HYP-02。远端公开 clone 和 refs 查询均可用。旧入口的状态以此处实测为准。
+https://github.com/18926119195/hypertext-interact/commit/d4c188a541c758c4ba691ae7088dc82b87f56269
+
+[HYP-08] 2026-11-19 +08:00  构建修复、协作入口与文件归档
+13:35:14｜173cd1ec876f9b06c445e879723fe762a557300a｜修复生产构建。main 复测曾报一次 TS2345 和三次 TS6133。协作版本让检索函数共用所需字段类型，删除三个未使用的局部声明或订阅。检索、索引和闭包的数据格式沿用原来协议。
+https://github.com/18926119195/hypertext-interact/commit/173cd1ec876f9b06c445e879723fe762a557300a
+https://github.com/18926119195/hypertext-interact/blob/173cd1ec876f9b06c445e879723fe762a557300a/docuverse/src/reasoning/hybridRetrieve.ts#L6-L28
+
+14:16:32｜dd57244e3a71276d121229871e8e97545fc931d0｜加入根目录协作入口 `MAINTAINERS.txt`，给出正常代码路径、材料缺口及接续事项。
+https://github.com/18926119195/hypertext-interact/commit/dd57244e3a71276d121229871e8e97545fc931d0
+https://github.com/18926119195/hypertext-interact/blob/dd57244e3a71276d121229871e8e97545fc931d0/MAINTAINERS.txt#L5-L19
+
+15:43:36｜22b03d436c51838c5a29a075abb43a1fdb407b0f｜整理两份未引用 UI 资源至 `docs/archive/ui-assets/`，按 Git blob 对应去重 54 组页图，保留应用 public/ 路径，恢复 HTML 的 `/favicon.svg`。已有档案映射逐项记录旧路径及可定位的 Git 对象。
+https://github.com/18926119195/hypertext-interact/commit/22b03d436c51838c5a29a075abb43a1fdb407b0f
+https://github.com/18926119195/hypertext-interact/blob/22b03d436c51838c5a29a075abb43a1fdb407b0f/docs/archive/PATHS.txt#L1-L19
+https://github.com/18926119195/hypertext-interact/blob/22b03d436c51838c5a29a075abb43a1fdb407b0f/docuverse/index.html#L1-L13
+
+[HYP-09] 当前运行、核对和研究接续
+当前协作入口以远端维护分支为准。项目根在 `docuverse/`。
+    git clone --branch codex/repository-cleanup https://github.com/18926119195/hypertext-interact.git
+    cd hypertext-interact/docuverse
+    npm ci --ignore-scripts --no-audit --no-fund
+    npm run dev
+    npm run build
+    npm run lint -- src
+协作入口 https://github.com/18926119195/hypertext-interact/blob/codex/repository-cleanup/MAINTAINERS.txt
+命令实现 https://github.com/18926119195/hypertext-interact/blob/22b03d436c51838c5a29a075abb43a1fdb407b0f/docuverse/package.json#L1-L11
+
+2026-11-19 本轮复跑 `22b03d4` 的独立源码副本，Node 24.22.1 / npm 11.9.0，使用可写工作区缓存完成 102 个依赖安装。`npm run build` 通过，Vite 转换 637 模块。`npm run lint -- src` 退出 0，14 条既有警告。Vite preview 的首页、JS、图标和样本页图均 HTTP 200。样例使用内存 localStorage 和模拟 fetch 装载实际代码，HYP-04 至 HYP-06 的模块检查通过。运行范围不含真实 OCR、Embedding 或 Chat 服务，也未验收完整浏览器交互。
+
+研究接续 1｜混排槽身份。先图 k0、后文 k1 的合成页，实际导出正文 `smoke-book|slot|p0|k1`，A1 正文 `smoke-book|slot|p0|k0`。索引用文字与图分组后的顺序重设槽号，导出读 OCR `slotK`。涉及历史闭包及索引键的变动，应先补兼容夹具，再决定迁移方式。
+https://github.com/18926119195/hypertext-interact/blob/22b03d436c51838c5a29a075abb43a1fdb407b0f/docuverse/src/reasoning/pipelineA.ts#L418-L466
+https://github.com/18926119195/hypertext-interact/blob/22b03d436c51838c5a29a075abb43a1fdb407b0f/docuverse/src/reasoning/slotDatasetExport.ts#L39-L70
+
+研究接续 2｜B1 再入。代码具备候选预览、取消、确认和 ReasonEdge 拼装，多闭包数据模型和端到端行为缺少本库运行证据。可以从房内状态的回退、切页和前提绑定加回归夹具。
+https://github.com/18926119195/hypertext-interact/blob/22b03d436c51838c5a29a075abb43a1fdb407b0f/docuverse/src/reasoning/closureStore.ts#L471-L544
+
+研究接续 3｜图脸与模型侧约束。当前 Chat 发送文本，图脸 imageRef 只被格式化到提示词；还没有可执行的视觉输入段、Attention Mask 编译或服务级多 Agent 调度证据。后续验收要核对真正出站载荷或服务侧实现。
+https://github.com/18926119195/hypertext-interact/blob/22b03d436c51838c5a29a075abb43a1fdb407b0f/docuverse/src/reasoning/bundle.ts#L81-L109
+https://github.com/18926119195/hypertext-interact/blob/22b03d436c51838c5a29a075abb43a1fdb407b0f/docuverse/src/reasoning/llmClient.ts#L55-L85
+
+[HYP-10] transcript 缺口与跨库后续证据
+本轮检查公开分支可达历史的文件名、两份专利 OCR 文本的来源和交接 ZIP 成员清单。未定位本库带发言人或轮次的原始 transcript，因此没有可逐轮引用的聊天原句或聊天日期。此处采用 Git 和源代码行号。Git 时间只对应提交事件。
+
+后续相关材料在 diergbanben-fanout 的 `chat history`，其首次入库时间为 2026-08-24 13:49:58 +08:00，属于该库独立的导出及后续 A/B 实验。它可用于后续交叉定位术语和研究延续，不能替代 hypertext-interact 的缺失聊天或证明当时在本库完成了相同实现。该导出没有逐轮日期，阅读时按原始行号推进。
+https://github.com/18926119195/diergbanben-fanout/commit/716939b9be634b2e4b53ab5644ef70942a5e20a4
+https://github.com/18926119195/diergbanben-fanout/blob/b5495d32fd083acae9f239e694e7a585723911d0/chat%20history#L1-L9
