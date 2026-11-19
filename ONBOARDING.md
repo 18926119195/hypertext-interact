@@ -1,49 +1,37 @@
-# 入库指南 · PDF 圈选、A1 证据与闭包
+# 入库指南 · PDF 圈选、A1 槽与闭包
 
-核验基线为 [main · d625541](https://github.com/18926119195/hypertext-interact/commit/d6255411736dd2e4cc80047a5be90c2a1b30a51a)，2026-11-19。
+[一分钟定位](#一分钟定位) · [沿聊天时间线看灵感](#沿聊天时间线看灵感) · [从代码反查来由](#从代码反查来由) · [走读与维护记录](#走读与维护记录)
 
-## 从哪里接手
+## 一分钟定位
 
-本库是证据约束的交互 Pilot。正常主链为「PDF/OCR → A1 槽与页框 → 用户圈选或 V_q 召回 → 证据 Bundle → 模型或 Mock → 闭包保存与匹配」。协作者接手的首要不变量是同一个 PDF 槽在检索、圈选、导出和回放中都能定位回同一页、同一框。
+这是 Docuverse 的交互推理试点。从 PDF 或 OCR 先登记 A1 槽（带页码、形状和文字的证据对象），用户圈选或按问句召回槽，再形成推理输入。输入与历史方向匹配时，界面可回放已保存的结论。运行入口在 [docuverse/](https://github.com/18926119195/hypertext-interact/tree/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse)。基线为 [main · d625541](https://github.com/18926119195/hypertext-interact/commit/d6255411736dd2e4cc80047a5be90c2a1b30a51a)。
 
-| 任务 | 从这里读 |
+## 沿聊天时间线看灵感
+
+**如何读状态。** 已实现表示在所列版本找到与灵感相符的代码路径。部分实现表示已有其中一段。未实现表示已查的入口尚无对应实现。证据不足时标待确认。归档与设计文稿按资料本身的状态描述。
+
+本库公开可达分支与交付 ZIP 中未找到带发言人的完整原始聊天。根目录「我的理念」为空文件。下表从 Git 提交与厂商规格重建沿革。提交日期对应代码或文件入库。提出想法的准确时间无法判定。后续 fanout 对话是独立实验资料。见 [开发时间线 HYP-01–HYP-10](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/DEVELOPMENT_HISTORY.txt)。
+
+| 编号与时间（2026 年，北京） | 原始线索与想法 | 基线状态 | 实现证据 |
+| --- | --- | --- | --- |
+| <a name="idea-i01"></a>I01 · 08-09 09:04 | 初始文献工作区用球面连接页面、标注和导航。 [初始提交](https://github.com/18926119195/hypertext-interact/commit/034ebe5fbbec5b4a17092f57aae2012561a9530e) | **已实现**。默认入口仍以球面视图及 HUD 为底座。 | [App 根视图](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/App.tsx#L14-L29) |
+| <a name="idea-i02"></a>I02 · 08-09 11:05 | 平面原页标注，并用微缩球显示联结。 [平面分支提交](https://github.com/18926119195/hypertext-interact/commit/36f3fee15691046c095da08f4358fcd8ef4f7516) | **已实现于历史分支**。该分支曾支持平面和球面切换，当前默认入口走球面 Pilot。 | [历史工作台选择](https://github.com/18926119195/hypertext-interact/blob/36f3fee15691046c095da08f4358fcd8ef4f7516/docuverse/src/App.tsx#L14-L50) · [当前 App](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/App.tsx#L14-L29) |
+| <a name="idea-i03"></a>I03 · 08-16 | 圈选锁定预先登记的 A1，模型接收该对象组装的证据。 [试点提交](https://github.com/18926119195/hypertext-interact/commit/0afde81901228443c804bf8503c6fdac41f1632e) | **已实现**。圈选返回原 A1 槽，客户端按 Bundle 走文本请求或 Mock。 | [A1 圈选](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/reasoning/pipelineA.ts#L660-L699) · [模型客户端](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/reasoning/llmClient.ts#L55-L85) |
+| <a name="idea-i04"></a>I04 · 08-17 | 用统一槽键和几何关系，让 PDF/OCR 候选能返回原页原框。 [流水线提交](https://github.com/18926119195/hypertext-interact/commit/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a) | **部分实现**。检索和圈选可回放同一框，混排 OCR 页仍可能出现导出键和 A1 键不同。 | [导出编号](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/reasoning/slotDatasetExport.ts#L40-L69) · [A1 编号](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/reasoning/pipelineA.ts#L293-L330) · [混排样本](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/scripts/check-system.mjs) |
+| <a name="idea-i05"></a>I05 · 08-17 | 通过对话闭包将已核对方向与证据槽关联，支持旧方向复用和排除。 [开发时间线 HYP-06](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/DEVELOPMENT_HISTORY.txt) | **已实现**。夹具验证命中后复用结论，fetch 次数为 0，排除项能进入下一 Bundle。 | [闭包状态](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/reasoning/closureStore.ts) · [复验段](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/scripts/check-system.mjs#L82-L112) |
+| <a name="idea-i06"></a>I06 · 08-17 快照 | 厂商规格提出视觉证据或服务侧的推理控制。 [厂商规格](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docs/%E5%86%85%E7%A6%80%E5%9D%90%E6%A0%87%E4%B8%8E%E6%8C%87%E5%90%91%E6%80%A7%E6%8E%A8%E7%90%86%E6%8E%A7%E5%88%B6-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%8E%82%E5%95%86%E5%B7%A5%E7%A8%8B%E8%A7%84%E6%A0%BC.md) | **未落地**于当前正常模型入口。图脸以文本引用进入提示，出站请求无独立视觉输入段，也未见 Attention Mask 编译。 | [图脸格式化](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/reasoning/bundle.ts#L81-L109) · [出站载荷](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/reasoning/llmClient.ts#L55-L85) |
+| <a name="idea-i07"></a>I07 · 08-24 后续对话入库 | 用户在 fanout 追问这个旁路实验和 `diergbanben-` 的关系。 [后续对话](https://github.com/18926119195/diergbanben-fanout/blob/716939b9be634b2e4b53ab5644ef70942a5e20a4/chat%20history#L749) | **无法判定**本仓更早的原始讨论。当前主入口有 Pilot，可据 Git 与后续对话分别核验沿革。 | [当前应用](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/App.tsx#L14-L29) · [来源范围 HYP-10](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/DEVELOPMENT_HISTORY.txt) |
+
+## 从代码反查来由
+
+| 第一次读到的代码 | 它来自哪段想法 |
 | --- | --- |
-| 跑主界面 | [应用入口](docuverse/src/App.tsx) · [推理面板](docuverse/src/ui/ReasoningPilotPanel.tsx) · [克隆与启动](docs/CLONE.md) |
-| 查索引、召回、槽键 | [pipelineA.ts](docuverse/src/reasoning/pipelineA.ts) · [ocrSlot.ts](docuverse/src/reasoning/ocrSlot.ts) · [slotDatasetExport.ts](docuverse/src/reasoning/slotDatasetExport.ts) |
-| 查请求与旧结论复用 | [bundle.ts](docuverse/src/reasoning/bundle.ts) · [llmClient.ts](docuverse/src/reasoning/llmClient.ts) · [closureStore.ts](docuverse/src/reasoning/closureStore.ts) |
-| 查词汇和分支沿革 | [历史 HYP-01–HYP-10](DEVELOPMENT_HISTORY.txt) · [维护入口](MAINTAINERS.txt) |
+| [ReasoningPilotPanel.tsx](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/ui/ReasoningPilotPanel.tsx) 的圈选、组包和槽导出 | [I03](#idea-i03) 解释先登记再锁定，[I04](#idea-i04) 解释导出与回溯为什么都要带槽号。 |
+| [closureStore.ts](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/reasoning/closureStore.ts) 的历史方向与保存状态 | [I05](#idea-i05) 解释为什么一次新问可能返回旧结论并跳过模型。 |
+| [bundle.ts](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/reasoning/bundle.ts) 的图脸描述 | [I06](#idea-i06) 解释应用的证据对象和模型真正收到的载荷之间的边界。 |
 
-```sh
-cd docuverse
-npm ci --ignore-scripts
-npm run build
-npm run check:system
-npm run dev
-```
+## 走读与维护记录
 
-Node 24.22.1 下构建及 [离线检查](docuverse/scripts/check-system.mjs) 通过。夹具覆盖 A1 几何、PDF 和图片回退、混合检索、圈选、Mock、闭包零 fetch 复用、排除方向与文本请求体，并输出混排 OCR 页的键差异。实际 OCR、远端模型和浏览器全流程需要另做集成验收。
+在 [离线检查](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/scripts/check-system.mjs) 找到混排页的 `OBSERVED`，沿 [导出](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/reasoning/slotDatasetExport.ts#L40-L69) 和 [A1 注册](https://github.com/18926119195/hypertext-interact/blob/d6255411736dd2e4cc80047a5be90c2a1b30a51a/docuverse/src/reasoning/pipelineA.ts#L293-L330) 各追一次。`docuverse/` 中 `npm run check:system` 可在安装依赖后复现。读完应能解释两个键为何可能是 `k1` 和 `k0`，以及一次闭包命中为什么不发模型请求。本轮 Node 24 构建与检查通过。若后续找到更早的原始对话或代码反例，按 I 编号登记来源、提交和修正理由。
 
-## 沿时间线核对
-
-公开分支的可达历史和交付 ZIP 未定位本库带发言人和轮次的原始聊天。以下是 Git 时间线。fanout 的 [2026-08-24 对话导出](https://github.com/18926119195/diergbanben-fanout/blob/716939b9be634b2e4b53ab5644ef70942a5e20a4/chat%20history) 对应后续实验。详见 [HYP-10](DEVELOPMENT_HISTORY.txt)。
-
-| 时间（北京时间） | 目标与实现状态 | 证据 |
-| --- | --- | --- |
-| 08-09 | 球面工作区进入历史基线。平面标注及微缩球保留在历史分支 `v2-flat-minisphere`。 | [球面入口](https://github.com/18926119195/hypertext-interact/commit/034ebe5fbbec5b4a17092f57aae2012561a9530e) · [平面分支提交](https://github.com/18926119195/hypertext-interact/commit/36f3fee15691046c095da08f4358fcd8ef4f7516) |
-| 08-16 至 08-17 | A1 先登记、圈选后锁定，混合召回返回原槽和框。闭包匹配可输出已保存结论并跳过模型调用。图脸在当前出站请求中以文本描述表达。 | [圈选试点](https://github.com/18926119195/hypertext-interact/commit/0afde81901228443c804bf8503c6fdac41f1632e) · [OCR 槽与回放](https://github.com/18926119195/hypertext-interact/commit/3995fc9e8fd5b48e0d072d0a26a647a9e5e55a1a) |
-| 11-19 | 整理历史导航并增加可执行回归。混排 OCR 测试观察到导出槽 `p0/k1` 与 A1 槽 `p0/k0` 仍有偏差。 | [PR #1](https://github.com/18926119195/hypertext-interact/pull/1) · [离线检测脚本](docuverse/scripts/check-system.mjs) |
-
-模型侧视觉输入、Attention Mask 及服务级多 Agent 调度尚缺本库实现证据。B1 再入具备若干状态和装配函数，端到端回退与前提绑定需要验证。
-
-## 下一项工作 · 消除混排 OCR 槽键漂移
-
-按钱学森《工程控制论》的反馈思想，用同一输入观察编号误差，再选择纠偏和回归路径。
-
-1. 用现有混排 OCR 样本固定页序、块序、原框和文字类别。记录导出 key、A1 key、检索返回 key 和历史闭包引用。再加入一份旧 localStorage 样本，作为兼容约束。
-2. 比较 `collectPageSlotRows` 的 slotK 回退和 `pipelineA.ts` 注册槽键的过程。由维护者选定权威编号和已有闭包的迁移方式，再改生成或映射路径。
-3. 验收要求同一块四处能解析为同一稳定 key 和框，旧记录仍定位到原块。保留不命中和重复块反例。闭包命中时重新断言模型 fetch 次数为 0。任何旧引用失效即暂停合入。
-4. PR 附 HYP-04、HYP-06、同夹具修正前后日志及可回退的提交。通过后将验收结果和迁移决定回写时间线。
-
-## 方法依据
-
-本指南把总体设计落实为边界、目标和任务接口，把工程控制中的反馈落实为观测、判据和纠偏。维护者用原始协作记录、代码和固定样本共同核验定性判断与量化结果，据此决定下一轮行动。[《工程控制论》](https://openlibrary.org/books/OL49218199M/Engineering_cybernetics) · [《组织管理的技术——系统工程》](https://doi.org/10.13255/j.cnki.jusst.2011.06.020) · [《一个科学新领域——开放的复杂巨系统及其方法论》](https://cnki.istiz.org.cn/kcms/detail/detail.aspx?dbcode=CPFD&dbname=cpfd1999&filename=ZGXC199008001001)
+**指南如何更新。** 以仓库和版本划定范围，从聊天提取原始目标，再用代码与产物校正对当时决策的理解。新证据出现时，回到原编号修订记录。这种读法借鉴了钱学森的系统工程和工程控制论。 [《组织管理的技术——系统工程》](https://doi.org/10.13255/j.cnki.jusst.2011.06.020) · [《工程控制论》](https://openlibrary.org/books/OL49218199M/Engineering_cybernetics)
