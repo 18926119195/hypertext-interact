@@ -1,4 +1,6 @@
 hypertext-interact｜A1 证据约束的交互原型
+开发时间线（原话、实现提交、源码行号和验证）见同目录 DEVELOPMENT_HISTORY.txt。
+https://github.com/18926119195/hypertext-interact/blob/codex/repository-cleanup/DEVELOPMENT_HISTORY.txt
 核验 Git 提交 d4c188a541c758c4ba691ae7088dc82b87f56269
 协作总导航 https://github.com/18926119195/docuverse/blob/codex/repository-cleanup/MAINTAINERS.txt
 
