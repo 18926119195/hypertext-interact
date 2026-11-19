@@ -187,7 +187,6 @@ function pageAtoms(
   ocr: OcrPageResult | undefined,
 ): PageAtoms {
   const hasPageImage = Boolean(page.imageUrl)
-  const strand = page.strandIndex
 
   if (ocr && ocr.blocks.length > 0) {
     const { text, figs } = splitOcrBlocks(ocr)

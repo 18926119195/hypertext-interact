@@ -12,7 +12,6 @@ export function PdfUploadPanel() {
   const uploadProgress = useDocuverse((s) => s.uploadProgress)
   const corpus = useDocuverse((s) => s.corpus)
   const uploadLabel = useDocuverse((s) => s.uploadLabel)
-  const setCorpus = useDocuverse((s) => s.setCorpus)
   const runOcrOnPagesLackingText = useDocuverse(
     (s) => s.runOcrOnPagesLackingText,
   )

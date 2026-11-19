@@ -3,14 +3,16 @@
  * Results still map 1:1 to existing place atoms / key* — never invent locks.
  */
 
-export function atomSearchText(input: {
+interface SearchAtom {
   kind: string
   content: string
   faces: {
     text?: { content: string }
-    fig?: { note: string; figId: string }
+    fig?: { note: string }
   }
-}): string {
+}
+
+export function atomSearchText(input: SearchAtom): string {
   const text = input.faces.text?.content?.trim()
   if (text && text.length >= 8) return text
   // Prefer stream content over fig boilerplate
@@ -45,14 +47,7 @@ function tokenizeDoc(text: string): string[] {
   return tokenizeQuery(text)
 }
 
-export function isRetrievableAtom(input: {
-  kind: string
-  content: string
-  faces: {
-    text?: { content: string }
-    fig?: { note: string }
-  }
-}): boolean {
+export function isRetrievableAtom(input: SearchAtom): boolean {
   const t = atomSearchText(input)
   if (t.length < 4) return false
   // Drop near-empty fig placeholders
