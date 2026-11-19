@@ -1,0 +1,19 @@
+hypertext-interact｜A1 证据约束的交互原型
+核验 Git 提交 d4c188a541c758c4ba691ae7088dc82b87f56269
+协作总导航 https://github.com/18926119195/docuverse/blob/codex/repository-cleanup/MAINTAINERS.txt
+
+这个库在开发什么
+应用在 docuverse/。开发主线是 PDF/OCR 槽、V_q 召回、锁定证据、闭包匹配和推理结果复用。可以从 UI 沿调用追到发送给模型的正文；外部模型内部如何分配注意力没有实现证据。
+
+首次阅读的代码入口
+ReasoningPilotPanel.tsx → pipelineA.ts → closureStore.ts。先核对 evidence bundle 与实际请求，再调整召回。
+https://github.com/18926119195/hypertext-interact/blob/d4c188a541c758c4ba691ae7088dc82b87f56269/docuverse/src/ui/ReasoningPilotPanel.tsx#L36
+https://github.com/18926119195/hypertext-interact/blob/d4c188a541c758c4ba691ae7088dc82b87f56269/docuverse/src/reasoning/pipelineA.ts
+https://github.com/18926119195/hypertext-interact/blob/d4c188a541c758c4ba691ae7088dc82b87f56269/docuverse/src/reasoning/closureStore.ts
+
+相关聊天原件
+公开可达版本中未辨认出该库自己的聊天原件。维护判断基于源码；后续 A/B 的聊天材料另见 diergbanben-fanout。
+
+维护边界和下次接续
+保留为 Pilot 回归基线。优先补混排 OCR 同一槽在导出与 A1 中是否同键的夹具。已有观察是两者在混排页可重编号。任何键修复先做旧缓存及闭包的兼容样例。保留公开演示页面的现有资源路径。
+本文件只依据 Git 提交关系、可定位的聊天原件和源码。候选改动需要以正常入口及复跑证据验收。
