@@ -1,0 +1,178 @@
+文件路径索引
+
+整理前路径与 Git 对象可从 https://github.com/18926119195/hypertext-interact/tree/dd57244e3a71276d121229871e8e97545fc931d0 回查。
+图标入口使用现有 public/favicon.svg，应用根目录和部署根目录保持原布局。
+
+原样移动
+
+docuverse/src/assets/hero.png
+  docs/archive/ui-assets/hero.png
+  Git blob 02251f4b956c55af2d76fd0788124d7eee2b45eb
+docuverse/src/assets/vite.svg
+  docs/archive/ui-assets/vite.svg
+  Git blob 5101b674df391399da71c767aa5c976426c9dc7a
+
+同一对象的旧路径映射
+
+pages/connections/page-01.png
+  docuverse/public/pdf-pages/connections/page-01.png
+  Git blob dc680f100abf56bdf768268c4eaf5ddab0a0d0f3
+pages/connections/page-02.png
+  docuverse/public/pdf-pages/connections/page-02.png
+  Git blob 6e6ec750a2e3038b1f92e4c182c078de27c83fe9
+pages/connections/page-03.png
+  docuverse/public/pdf-pages/connections/page-03.png
+  Git blob 599242d35c610920332ff21c769cebcaff615001
+pages/connections/page-04.png
+  docuverse/public/pdf-pages/connections/page-04.png
+  Git blob 0acf006a042b2b2a2de1da59ffb17889fbf995dc
+pages/connections/page-05.png
+  docuverse/public/pdf-pages/connections/page-05.png
+  Git blob d6a396dd5409ea2edebb355bc212549693ad2204
+pages/connections/page-06.png
+  docuverse/public/pdf-pages/connections/page-06.png
+  Git blob 381ece3b242eff0fa6eb630dda39cadaaed82f2d
+pages/connections/page-07.png
+  docuverse/public/pdf-pages/connections/page-07.png
+  Git blob 2bc5abd0cb64c356192106ab118d6bcceb85dadd
+pages/connections/page-08.png
+  docuverse/public/pdf-pages/connections/page-08.png
+  Git blob 1c6cfcd270887aa788f3184f2abc69fd6bdc7a34
+pages/connections/page-09.png
+  docuverse/public/pdf-pages/connections/page-09.png
+  Git blob 8034b4059db5176e2c8e6fb4bf8d89fbf27d396d
+pages/connections/page-10.png
+  docuverse/public/pdf-pages/connections/page-10.png
+  Git blob 463f2b1b444ee79c329052b2e781d7532a6a16b7
+pages/connections/page-11.png
+  docuverse/public/pdf-pages/connections/page-11.png
+  Git blob 5b3e553722912005820aef9db99ae2f00eef480d
+pages/connections/page-12.png
+  docuverse/public/pdf-pages/connections/page-12.png
+  Git blob 41a32aa8c21f5e12b573312292dba4dc8328cf7b
+pages/connections/page-13.png
+  docuverse/public/pdf-pages/connections/page-13.png
+  Git blob 61d06cdd7e15f2139d2685e5b415b024a163c1d5
+pages/connections/page-14.png
+  docuverse/public/pdf-pages/connections/page-14.png
+  Git blob 0564d41f99031669085862df3550aff78774d638
+pages/connections/page-15.png
+  docuverse/public/pdf-pages/connections/page-15.png
+  Git blob 0547440ad587dc4e5e22b4c0ecd565a2de201eee
+pages/connections/page-16.png
+  docuverse/public/pdf-pages/connections/page-16.png
+  Git blob 3954c5ee3894821b2dc125ef7f104edfb91d5ab7
+pages/connections/page-17.png
+  docuverse/public/pdf-pages/connections/page-17.png
+  Git blob 2a671fdaf322e1eb04805d6ccc7f55dd6a19ab80
+pages/connections/page-18.png
+  docuverse/public/pdf-pages/connections/page-18.png
+  Git blob 6cf92a0c07be633c5aad40357b238b27dfdcbd39
+pages/connections/page-19.png
+  docuverse/public/pdf-pages/connections/page-19.png
+  Git blob 15810c8abaa3e6131cc9be05b4fc07b3ce429d18
+pages/connections/page-20.png
+  docuverse/public/pdf-pages/connections/page-20.png
+  Git blob 8b2e186e527bcc6cec814e0e10f57fe12626a83d
+pages/connections/page-21.png
+  docuverse/public/pdf-pages/connections/page-21.png
+  Git blob 02c07d488e55f11b58eaf79dcb6537c37623b0bb
+pages/connections/page-22.png
+  docuverse/public/pdf-pages/connections/page-22.png
+  Git blob 6aafb2024befa9cb795af801664c13dbb7eff1ef
+pages/connections/page-23.png
+  docuverse/public/pdf-pages/connections/page-23.png
+  Git blob 9ff7bb633c5bc06e10c51b06b957fc3fabd37ef5
+pages/connections/page-24.png
+  docuverse/public/pdf-pages/connections/page-24.png
+  Git blob c180f123dcf78ff52f57ea80b6ceeb6fa1d22a1e
+pages/connections/page-25.png
+  docuverse/public/pdf-pages/connections/page-25.png
+  Git blob fa0c4d5e56d888edea9577f44a3aeed74329f9d6
+pages/connections/page-26.png
+  docuverse/public/pdf-pages/connections/page-26.png
+  Git blob 2ebcdda7f146399546b667a6495ebb87719df68e
+pages/connections/page-27.png
+  docuverse/public/pdf-pages/connections/page-27.png
+  Git blob 2969245178698628fea98c98173ebfc4f7d1f2a7
+pages/connections/page-28.png
+  docuverse/public/pdf-pages/connections/page-28.png
+  Git blob 4ae3c50c63dee1ce8221216f7d61361d79b29131
+pages/intercalation/page-01.png
+  docuverse/public/pdf-pages/intercalation/page-01.png
+  Git blob ce35d0277a865a1795ef6001bad215bbddb9412f
+pages/intercalation/page-02.png
+  docuverse/public/pdf-pages/intercalation/page-02.png
+  Git blob c5e59942ca5dc55568dcff3e6f6a4d2e7541e437
+pages/intercalation/page-03.png
+  docuverse/public/pdf-pages/intercalation/page-03.png
+  Git blob 71ecc4db5a5ff7b630e232273b1d8c9456d9f001
+pages/intercalation/page-04.png
+  docuverse/public/pdf-pages/intercalation/page-04.png
+  Git blob 415274ced07a6609ff7582af61fad8a1fd1e6f01
+pages/intercalation/page-05.png
+  docuverse/public/pdf-pages/intercalation/page-05.png
+  Git blob 016d3da383c9f9e2e4633c38c88ceeeda13b04a5
+pages/intercalation/page-06.png
+  docuverse/public/pdf-pages/intercalation/page-06.png
+  Git blob 12091a0db656d13dc16c2e09e25abf5189d2fbcb
+pages/intercalation/page-07.png
+  docuverse/public/pdf-pages/intercalation/page-07.png
+  Git blob d474c66bdf26244f1e2c9f9b579e1b737502c532
+pages/intercalation/page-08.png
+  docuverse/public/pdf-pages/intercalation/page-08.png
+  Git blob 8dc1a42d0140a64a145e7f287f79c0ccf1e8206c
+pages/intercalation/page-09.png
+  docuverse/public/pdf-pages/intercalation/page-09.png
+  Git blob c6616f640d84aaedc4a89836b05646665620f006
+pages/intercalation/page-10.png
+  docuverse/public/pdf-pages/intercalation/page-10.png
+  Git blob c305b4cf62b9364e5420ce0aa3b53a7e680d3fa4
+pages/intercalation/page-11.png
+  docuverse/public/pdf-pages/intercalation/page-11.png
+  Git blob 96929b2d2798c96bc2fefbb9b80e6b090978e387
+pages/intercalation/page-12.png
+  docuverse/public/pdf-pages/intercalation/page-12.png
+  Git blob 84b68eccede730d89eebfa473453747e917ab3c5
+pages/intercalation/page-13.png
+  docuverse/public/pdf-pages/intercalation/page-13.png
+  Git blob 3aa2bb31525024a3255256b452805ab5a04ed110
+pages/intercalation/page-14.png
+  docuverse/public/pdf-pages/intercalation/page-14.png
+  Git blob c2d27204e5b8a81913a0651769621576fa45d9c3
+pages/intercalation/page-15.png
+  docuverse/public/pdf-pages/intercalation/page-15.png
+  Git blob 21e27fda14e0425307ee7b72b556857f09c7c629
+pages/intercalation/page-16.png
+  docuverse/public/pdf-pages/intercalation/page-16.png
+  Git blob 9bbd809ea46a4e5cbb2edda984d5e67c51f72560
+pages/intercalation/page-17.png
+  docuverse/public/pdf-pages/intercalation/page-17.png
+  Git blob eefca658f1588ca1c207017c28c70e4aec038945
+pages/intercalation/page-18.png
+  docuverse/public/pdf-pages/intercalation/page-18.png
+  Git blob c4e85128d1d756ef6baff581ebbc6174006855e1
+pages/intercalation/page-19.png
+  docuverse/public/pdf-pages/intercalation/page-19.png
+  Git blob e9718d917c5730e7085e8cffb3d15df7df38d2f6
+pages/intercalation/page-20.png
+  docuverse/public/pdf-pages/intercalation/page-20.png
+  Git blob 51c11d9c913ed326c8954b7e1fb00af071a6859e
+pages/intercalation/page-21.png
+  docuverse/public/pdf-pages/intercalation/page-21.png
+  Git blob 92d5909a7e07e3420f4ee100eb398ec4bf1e7cb0
+pages/intercalation/page-22.png
+  docuverse/public/pdf-pages/intercalation/page-22.png
+  Git blob bc799b455b98412c8c5bde7dd35badf2dc92c37d
+pages/intercalation/page-23.png
+  docuverse/public/pdf-pages/intercalation/page-23.png
+  Git blob 38e25a10373ee8eaa443519fe18a2dc353aea8bc
+pages/intercalation/page-24.png
+  docuverse/public/pdf-pages/intercalation/page-24.png
+  Git blob e791a853891ab1611ddf9e1fd0b64713ce5fa438
+pages/intercalation/page-25.png
+  docuverse/public/pdf-pages/intercalation/page-25.png
+  Git blob d3929629a2b6d162986604a657450de95ebe25a6
+pages/intercalation/page-26.png
+  docuverse/public/pdf-pages/intercalation/page-26.png
+  Git blob 5da353e105e2173aaf95e9bd19a6d62c511b5b85
